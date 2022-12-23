@@ -89,3 +89,19 @@ module.exports = {
         17: 'ужасы',
         1: 'триллер',
     },
+    imdbPrelink:
+        'https://imdb-api.com/API/AdvancedSearch/k_ulfxd37t?title_type=feature&user_rating=7.0,10&genres=',
+    imdbPostlink: '&groups=top_1000&count=250&sort=user_rating,desc',
+    kinopoiskPrelink:
+        'https://kinopoiskapiunofficial.tech/api/v2.2/films?genres=',
+    kinopoiskPostlink: '&order=RATING&type=ALL&ratingFrom=7&page=',
+    imdbToKinopoiskPrelink:
+        'https://kinopoiskapiunofficial.tech/api/v2.2/films?type=ALL&imdbId=',
+    imdbToKinopoiskPostlink: '&page=1',
+    kinopoiskKeyWordPrelink:
+        'https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=',
+    kinopoiskKeyWordPostlink: '&page=1',
+    kinopoiskApiPagesCount: 20,
+    preferableMinimumRating: 6,
+    preferableTypes: ['FILM', 'TV_SERIES'],
+};

@@ -1,0 +1,24 @@
+{
+  "name": "ff_bot",
+  "version": "1.0.0",
+  "description": "random film finder bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BogPin/ff_bot.git"
+  },
+  "author": "Bohdan Pinchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BogPin/ff_bot/issues"
+  },
+  "homepage": "https://github.com/BogPin/ff_bot#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.6",
+    "node-telegram-bot-api": "^0.56.0",
+    "request": "^2.88.2"
+  }
+}
