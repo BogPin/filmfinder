@@ -64,3 +64,33 @@ bot.on('message', async (msg) => {
     }
     bot.status = session.none;
 });
+
+bot.onText(/Фильм по названию/, (msg) => {
+    bot.sendMessage(msg.chat.id, 'Введите название фильма');
+    bot.status = session.filmByTitle;
+});
+
+bot.onText(/Фильмы по ключевым словам/, (msg) => {
+    bot.sendMessage(msg.chat.id, 'Введите ключевые слова');
+    bot.status = session.filmsByKeywords;
+});
+
+bot.onText(/Случайный фильм/, (msg) => {
+    bot.sendMessage(msg.chat.id, 'Выберите жанр', {
+        reply_markup: {
+            inline_keyboard: defs.genres,
+        },
+    });
+    bot.status = session.none;
+});
+
+bot.onText(/\/start/, (msg) => {
+    const text = `Приветствую, ${msg.from.first_name}\nВыберите функцию👇`;
+    bot.sendMessage(msg.chat.id, text, {
+        reply_markup: {
+            keyboard: defs.home,
+            resize_keyboard: true,
+        },
+    });
+    bot.status = session.none;
+});
