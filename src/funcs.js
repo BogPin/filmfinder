@@ -47,3 +47,20 @@ const kinopoiskKeyWordLinkGenerator = (keyWords) => {
     return preLink + encodeURI(keyWords) + postLink;
 };
 
+const filmInfo = (film) => {
+    if (film === undefined) return { poster: undefined, caption: 'Не найдено' };
+    let genreOfFilm = '';
+    for (const genre of film.genres) {
+        if (film.genres.indexOf(genre) === film.genres.length - 1) {
+            genreOfFilm += genre.genre;
+        } else genreOfFilm += genre.genre + ', ';
+    }
+    const cap =
+        `Название: ${film.nameRu}\nГод выпуска: ${film.year}\n` +
+        `Рейтинг: ${film.ratingImdb}\nЖанры: ${genreOfFilm}`;
+    const caption = cap.replace(/undefined/, 'отсутствует');
+    return { poster: film.posterUrl, caption };
+};
+
+
+
