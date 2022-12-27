@@ -62,5 +62,74 @@ const filmInfo = (film) => {
     return { poster: film.posterUrl, caption };
 };
 
+const options = (link) => ({
+    method: 'GET',
+    url: link,
+    headers: {
+        'X-API-KEY': '4763ee9d-133f-4291-ae48-6066a1ba76bb',
+        'Content-Type': 'application/json',
+    },
+});
+
+const getKinopoiskFilms = async (genre) => {
+    const kinopoiskFilmsArr = [];
+    for (let page = 1; page <= defs.kinopoiskApiPagesCount; page++) {
+        const link = kinopoiskLinkGenerator(genre, page);
+        const result = await makeRequest(options(link)).catch(loger);
+        kinopoiskFilmsArr.push(...result.items);
+    }
+    console.log({ length: kinopoiskFilmsArr.length });
+    return kinopoiskFilmsArr;
+};
+
+const mGetKinopoiskFilms = memoize(getKinopoiskFilms);
+
+const getImdbFilms = async (genre) => {
+    const options = {
+        method: 'GET',
+        url: imdbLinkGenerator(genre),
+    };
+    const imdbFilmsArr = [];
+    const result = await makeRequest(options).catch(loger);
+    imdbFilmsArr.push(...result.results);
+    console.log({ length: imdbFilmsArr.length });
+    return imdbFilmsArr;
+};
+
+const mGetImdbFilms = memoize(getImdbFilms);
+
+const getKinopoiskFilmFromImdb = async (film) => {
+    const link = kinopoiskFromImdbLinkGenerator(film.id);
+    const res = await makeRequest(options(link)).catch(loger);
+    return res.items[0];
+};
+
+const getFilmsByKeywords = async (keywords) => {
+    const filmsArr = [];
+    const link = kinopoiskKeyWordLinkGenerator(keywords);
+    const res = await makeRequest(options(link)).catch(loger);
+    filmsArr.push(...res.films);
+    for (let page = 2; page <= res.pagesCount; page++) {
+        const res = await makeRequest(options(link)).catch(loger);
+        filmsArr.push(...res.films);
+    }
+    const filtered = res.films.filter((film) => {
+        const ratingFilter = parseInt(film.rating) > defs.preferableMinimumRating;
+        const typeFilter = defs.preferableTypes.some((type) => type === film.type);
+        return ratingFilter & typeFilter;
+    });
+    let msg = '';
+    for (const film of filtered) {
+        let type;
+        if (film.type === 'FILM') type = 'полнометражный фильм';
+        else type = 'cериал';
+        if (filtered.indexOf(film) !== filtered.length - 1) {
+            msg += `${film.nameRu}, ${film.year}, тип: ${type}, рейтинг: ${film.rating}/10\n`;
+        } else
+            msg += `${film.nameRu}, ${film.year}, тип: ${type}, рейтинг: ${film.rating}/10`;
+    }
+    return msg.replace(/undefined/, 'отсутствует');
+};
+
 
 
