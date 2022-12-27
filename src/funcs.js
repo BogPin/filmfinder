@@ -131,5 +131,24 @@ const getFilmsByKeywords = async (keywords) => {
     return msg.replace(/undefined/, 'отсутствует');
 };
 
+const getFilmByTitle = async (title) => {
+    const link = kinopoiskKeyWordLinkGenerator(title);
+    const res = await makeRequest(options(link)).catch(loger);
+    return filmInfo(res.films[0]);
+};
 
+const randomFilm = (films) => films[Math.floor(Math.random() * films.length)];
+
+module.exports = {
+    randomFilm,
+    mGetKinopoiskFilms,
+    mGetImdbFilms,
+    getKinopoiskFilmFromImdb,
+    getFilmsByKeywords,
+    filmInfo,
+    kinopoiskKeyWordLinkGenerator,
+    options,
+    makeRequest,
+    getFilmByTitle,
+};
 
